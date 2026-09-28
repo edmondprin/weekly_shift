@@ -98,7 +98,8 @@ def gather_user_shift():
         "total_minutes": total_minutes_daily
     }
 
-print(gather_user_shift())
+if __name__ == "__main__":
+    print(gather_user_shift())
 
 
 
