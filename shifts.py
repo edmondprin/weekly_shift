@@ -1,3 +1,9 @@
+from datetime import date
+
+def get_current_date():
+    today = date.today().isoformat()
+    return today
+
 # validate + convert
 def convert_to_minutes(shift_entry):
     hours_str, minutes_str = shift_entry.split(":")
@@ -69,6 +75,7 @@ def calculate_daily_hours(
     
 # interact with user (relies on convert_to_minutes which raises error)
 def gather_user_shift():
+    today = get_current_date()
     shift_moments = ["morning start", "morning end", "afternoon start", "afternoon end"]
     
     while True:
@@ -91,6 +98,7 @@ def gather_user_shift():
         except ValueError:
             print("Time invalid. Try again")
     return {
+        "date": today,
         "morning_in": raw_inputs[0],
         "morning_out": raw_inputs[1],
         "afternoon_in": raw_inputs[2],
@@ -98,8 +106,8 @@ def gather_user_shift():
         "total_minutes": total_minutes_daily
     }
 
-if __name__ == "__main__":
-    print(gather_user_shift())
+# if __name__ == "__main__":
+#     print(gather_user_shift())
 
 
 
