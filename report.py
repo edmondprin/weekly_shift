@@ -1,3 +1,5 @@
+# turn stored shift data into a report
+
 from datetime import date, timedelta
 
 def calculate_weekly_minutes(shifts):
@@ -48,4 +50,22 @@ def get_current_week_shifts(shifts, my_date):
             current_week.append(shift)
     return current_week
 
-print(get_current_week_shifts(shifts, date(2026, 10, 2)))
+# print(get_current_week_shifts(shifts, date(2026, 10, 2)))
+
+def format_shift_line(shift):
+    total_daily_time = format_minutes(shift["total_minutes"])
+    return f"{shift['date']}: {shift['morning_in']}-{shift['morning_out']} | {shift['afternoon_in']}-{shift['afternoon_out']} - {total_daily_time}"
+
+def build_weekly_report(shift):
+    pass
+
+my_new_shift = {
+    "date": "2026-01-01", 
+    "morning_in": "08:00",
+    "morning_out": "09:00",
+    "afternoon_in": "10:00",
+    "afternoon_out": "11:00",
+    "total_minutes": 120
+}
+
+print(format_shift_line(my_new_shift))

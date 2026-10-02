@@ -1,3 +1,5 @@
+# gather/validate individual shift data
+
 from datetime import date
 
 def get_current_date():
