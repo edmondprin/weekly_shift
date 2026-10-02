@@ -1,3 +1,5 @@
 shifts.json
+__pycache__/
+*.pyc
 
 
