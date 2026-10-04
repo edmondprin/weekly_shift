@@ -56,9 +56,18 @@ def format_shift_line(shift):
     total_daily_time = format_minutes(shift["total_minutes"])
     return f"{shift['date']}: {shift['morning_in']}-{shift['morning_out']} | {shift['afternoon_in']}-{shift['afternoon_out']} - {total_daily_time}"
 
-def build_weekly_report(shift):
-    pass
+def build_weekly_report(shifts):
+    weekly_shifts = []
+    for shift in shifts:
+        shift_line = format_shift_line(shift)
+        weekly_shifts.append(shift_line)
+    total_week_min = format_minutes(calculate_weekly_minutes(shifts))
+    formatted_shifts =  "\n".join(weekly_shifts)if weekly_shifts else "No shifts recorded"
+    # return formatted_shifts
+    return f"Weekly Shift Report\n\n{formatted_shifts}\n\nWeekly total: {total_week_min}"
+        
 
+'''
 my_new_shift = {
     "date": "2026-01-01", 
     "morning_in": "08:00",
@@ -67,5 +76,27 @@ my_new_shift = {
     "afternoon_out": "11:00",
     "total_minutes": 120
 }
+'''
 
-print(format_shift_line(my_new_shift))
+# print(format_shift_line(my_new_shift))
+
+shifts = [
+    {
+        "date": "2026-10-01",
+        "morning_in": "08:00",
+        "morning_out": "12:00",
+        "afternoon_in": "13:00",
+        "afternoon_out": "17:30",
+        "total_minutes": 510,
+    },
+    {
+        "date": "2026-10-02",
+        "morning_in": "08:00",
+        "morning_out": "12:00",
+        "afternoon_in": "13:00",
+        "afternoon_out": "17:00",
+        "total_minutes": 480,
+    },
+]
+
+print(build_weekly_report(shifts))
