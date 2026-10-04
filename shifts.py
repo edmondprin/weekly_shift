@@ -108,21 +108,6 @@ def gather_user_shift():
         "total_minutes": total_minutes_daily
     }
 
-# if __name__ == "__main__":
-#     print(gather_user_shift())
-
-
-
-
-# new_list = gather_user_shift()
-
-def format_daily_hours(daily_log):
-    hours = daily_log // 60
-    minutes = daily_log % 60
-    return hours, minutes
-
-# print(format_daily_hours(calculate_daily_hours(*new_list)))
-
 
 
 

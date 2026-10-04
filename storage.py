@@ -6,8 +6,7 @@ import json
 # json.load()    JSON file → Python 
 # For real persistence, the existing JSON needs to be loaded before we append.
 # Start program > LOAD shifts.json > data = existing shifts > append new_shift > WRITE updated data back
-
-
+# JSON file → load() → Python object → modify → dump() → JSON file
 
 # JSON file → Python data
 def load_shifts():
@@ -17,16 +16,6 @@ def load_shifts():
     except (FileNotFoundError, json.JSONDecodeError):
         return []
 # An empty file is not valid JSON
-
-
-# new_shift = {
-#     "date": "2026-10-02",
-#     "morning_in": "09:00",
-#     "morning_out": "13:00",
-#     "afternoon_in": "13:00",
-#     "afternoon_out": "18:00",
-#     "total_minutes": 540
-# }
 
 # Python shift → persisted JS
 def save_shift(new_shift):

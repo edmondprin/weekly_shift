@@ -8,16 +8,6 @@ def calculate_weekly_minutes(shifts):
         total += shift["total_minutes"]
     return total
 
-shifts = [
-    {"date": "2026-09-25", "total_minutes": 400},  # previous week
-    {"date": "2026-09-28", "total_minutes": 480},  # Monday
-    {"date": "2026-10-01", "total_minutes": 450},  # Thursday
-    {"date": "2026-10-04", "total_minutes": 200},  # Sunday
-    {"date": "2026-10-05", "total_minutes": 500},  # next Monday
-]
-
-# print(calculate_weekly_minutes(my_shifts))
-
 
 def format_minutes(total_minutes):
     hours = total_minutes // 60
@@ -67,36 +57,3 @@ def build_weekly_report(shifts):
     return f"Weekly Shift Report\n\n{formatted_shifts}\n\nWeekly total: {total_week_min}"
         
 
-'''
-my_new_shift = {
-    "date": "2026-01-01", 
-    "morning_in": "08:00",
-    "morning_out": "09:00",
-    "afternoon_in": "10:00",
-    "afternoon_out": "11:00",
-    "total_minutes": 120
-}
-'''
-
-# print(format_shift_line(my_new_shift))
-
-shifts = [
-    {
-        "date": "2026-10-01",
-        "morning_in": "08:00",
-        "morning_out": "12:00",
-        "afternoon_in": "13:00",
-        "afternoon_out": "17:30",
-        "total_minutes": 510,
-    },
-    {
-        "date": "2026-10-02",
-        "morning_in": "08:00",
-        "morning_out": "12:00",
-        "afternoon_in": "13:00",
-        "afternoon_out": "17:00",
-        "total_minutes": 480,
-    },
-]
-
-print(build_weekly_report(shifts))
