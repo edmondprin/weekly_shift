@@ -1,5 +1,8 @@
 import os
 
+# export MANAGER_EMAIL="fake@email.com" 
+# echo $MANAGER_EMAIL
+
 def build_email(report):
     recipient = os.getenv("MANAGER_EMAIL")
     if not recipient:
@@ -12,7 +15,7 @@ def build_email(report):
     return email_data
 
 def preview_email(email_data):
-    print(f"---- EMAIL PREVIEW---\n\nTo: {email_data['recipient']}\nSubject: {email_data['subject']}\n\n{email_data['body']}\n\n---------------")
+    print(f"\n---- EMAIL PREVIEW---\n\nTo: {email_data['recipient']}\nSubject: {email_data['subject']}\n\n{email_data['body']}\n\n---------------")
 
 
 def confirm_send():

@@ -1,5 +1,9 @@
-from email_service import build_email, preview_email
+from email_service import build_email, preview_email, confirm_send
 import pytest
+
+# monkeypatch → temporarily replace something external to the function.
+# capsys → capture what was printed.
+# pytest.raises() → verify an exception is raised.
 
 def test_build_email(monkeypatch):
     # ARRANGE
@@ -43,7 +47,25 @@ def test_preview_email(capsys):
     assert "weekly shift recap" in captured.out
 
 
+def test_confirm_send_positive(monkeypatch):
+    # ARRANGE
+    monkeypatch.setattr("builtins.input", lambda _:"Yes")
+    # ACT
+    response = confirm_send()
+
+    # ASSERT
+    assert response is True
+
+def test_confirm_send_negative(monkeypatch):
+    monkeypatch.setattr("builtins.input", lambda _: "n")
+    response = confirm_send()
+    assert response is False
 
 
-
-
+def test_confirm_iteration(monkeypatch, capsys):
+    responses = iter(["hello", "yes"])
+    monkeypatch.setattr("builtins.input", lambda prompt:next(responses))
+    response = confirm_send()
+    captured = capsys.readouterr()
+    assert "Try again" in captured.out
+    assert response is True
