@@ -25,7 +25,7 @@ def copy_to_clipboard(text):
 # copy_to_clipboard("Hello")
 
 
-def send_email():
+def send_email(data):
     pass
 
 def choose_email_action():

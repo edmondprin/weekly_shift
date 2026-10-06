@@ -5,6 +5,7 @@ import pytest
 # capsys → capture what was printed.
 # pytest.raises() → verify an exception is raised.
 
+# control the environment the function reads / Control the external state that the function depends on.
 def test_build_email(monkeypatch):
     # ARRANGE
     report = "This is my week's summary of shifts"
@@ -46,7 +47,7 @@ def test_preview_email(capsys):
     assert "Total hours: 40 hours" in captured.out
     assert "weekly shift recap" in captured.out
 
-
+# input() — control what a dependency returns
 def test_choose_email_send(monkeypatch):
     monkeypatch.setattr("builtins.input", lambda _:"1")
     response = choose_email_action()
@@ -70,9 +71,27 @@ def test_choose_email_iteration(monkeypatch, capsys):
     assert "pick 1, 2, or 3" in captured.out
     assert result == "cancel"
 
+# intercepting an external function call and inspecting its arguments. control/observe what the function calls / Control how external dependency is called
+def test_copy_clipboard(monkeypatch):
+# ARRANGE
+    calls = {}
+    
+    def fake_run(command, input, text, check):
+        calls["command"] = command
+        calls["input"] = input
+        calls["text"] = text
+        calls["check"] = check
 
-def test_copy_clipboard():
-    pass
+    monkeypatch.setattr("email_service.subprocess.run", fake_run)
+
+# ACT
+    copy_to_clipboard("This is my text for today")
+
+# ASSERT
+    assert calls["command"] == ["pbcopy"]
+    assert calls["input"] == "This is my text for today"
+    assert calls["text"] is True
+    assert calls["check"] is True
 
 # Previous code where the function was binary (send or not send)
 '''

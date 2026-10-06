@@ -3,7 +3,7 @@ from datetime import date
 from shifts import gather_user_shift
 from storage import load_shifts, save_shift
 from report import get_current_week_shifts, build_weekly_report
-from email_service import build_email, preview_email, confirm_send
+from email_service import build_email, preview_email, copy_to_clipboard, choose_email_action, send_email
 
 def main():
     my_date = date.today()
@@ -14,11 +14,15 @@ def main():
     report = build_weekly_report(current_week_shifts)
     email_data = build_email(report)
     preview_email(email_data)
-    answer = confirm_send()
-    if answer: 
+    user_action = choose_email_action()
+    if user_action == "send": 
+        send_email(email_data)
         print("Email ready to send!")
+    elif user_action == "copy":
+        copy_to_clipboard(email_data["body"])
+        print("Email body copied!")
     else:
-        print("Email not sent!")
+        print("Action canceled")
 
 if __name__ == "__main__":
     main()
