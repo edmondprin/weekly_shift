@@ -1,4 +1,4 @@
-from email_service import build_email, preview_email, confirm_send
+from email_service import build_email, preview_email, choose_email_action, copy_to_clipboard
 import pytest
 
 # monkeypatch → temporarily replace something external to the function.
@@ -37,7 +37,7 @@ def test_preview_email(capsys):
     captured = capsys.readouterr()
 
     # ASSERT
-    assert captured.out.startswith("--") 
+    assert captured.out.startswith("\n") 
     assert captured.out.endswith("---\n") 
     # print() automatically adds a newline at the end
     assert captured.out.strip().endswith("---")
@@ -47,6 +47,35 @@ def test_preview_email(capsys):
     assert "weekly shift recap" in captured.out
 
 
+def test_choose_email_send(monkeypatch):
+    monkeypatch.setattr("builtins.input", lambda _:"1")
+    response = choose_email_action()
+    assert response == "send"
+
+def test_choose_email_copy(monkeypatch):
+    monkeypatch.setattr("builtins.input", lambda _:"2")
+    response = choose_email_action()
+    assert response == "copy"
+
+def test_choose_email_cancel(monkeypatch):
+    monkeypatch.setattr("builtins.input", lambda _:"3")
+    result = choose_email_action()
+    assert result == "cancel"
+
+def test_choose_email_iteration(monkeypatch, capsys):
+    responses = iter(["copy", "3"])
+    monkeypatch.setattr("builtins.input", lambda prompt:next(responses))
+    result = choose_email_action()
+    captured = capsys.readouterr()
+    assert "pick 1, 2, or 3" in captured.out
+    assert result == "cancel"
+
+
+def test_copy_clipboard():
+    pass
+
+# Previous code where the function was binary (send or not send)
+'''
 def test_confirm_send_positive(monkeypatch):
     # ARRANGE
     monkeypatch.setattr("builtins.input", lambda _:"Yes")
@@ -69,3 +98,4 @@ def test_confirm_iteration(monkeypatch, capsys):
     captured = capsys.readouterr()
     assert "Try again" in captured.out
     assert response is True
+'''

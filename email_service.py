@@ -40,7 +40,7 @@ def choose_email_action():
         else:
             print("Please make sure to pick 1, 2, or 3")
 
-print(choose_email_action())        
+# print(choose_email_action())        
 
 # send, copy body or cancel
 
