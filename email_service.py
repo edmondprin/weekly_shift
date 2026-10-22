@@ -1,11 +1,13 @@
 import os
 import subprocess
+import smtplib
+from email.message import EmailMessage
 
 # export MANAGER_EMAIL="fake@email.com" 
 # echo $MANAGER_EMAIL
 
 def build_email(report):
-    recipient = os.getenv("MANAGER_EMAIL")
+    recipient = os.getenv("MANAGER_EMAIL") 
     if not recipient:
         raise ValueError("MANAGER_EMAIL environment variable is not set")
     email_data = {
@@ -25,8 +27,23 @@ def copy_to_clipboard(text):
 # copy_to_clipboard("Hello")
 
 
-def send_email(data):
-    pass
+def send_email(email_data):
+    sender = os.getenv("GMAIL_ADDRESS")
+    password = os.getenv("GMAIL_APP_PASSWORD") # retrieves your Gmail credentials from environment variables.
+
+    if not sender or not password:
+        raise ValueError("Gmail credentials are not configured")
+
+    message = EmailMessage() # constructs the email, including its headers and body.
+    message["From"] = sender
+    message["To"] = email_data["recipient"]
+    message["Subject"] = email_data["subject"]
+    message.set_content(email_data["body"])
+
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server: # establishes an encrypted connection to Gmail.
+        server.login(sender, password) # authenticates using your Gmail address and App Password.
+        server.send_message(message) # sends the email.
+
 
 def choose_email_action():
     while True:
@@ -46,17 +63,16 @@ def choose_email_action():
 
 
 
-'''
 def confirm_send():
     while True:
-        user_answer = input("OK to send email? ")
-        if user_answer.strip().lower() in ("yes", "y"):
+        answer = input("Are you sure you want to send this email? (y/n): ").strip().lower()
+
+        if answer in ("y", "yes"):
             return True
-        elif user_answer.strip().lower() in ("no", "n"):
+        elif answer in ("n", "no"):
             return False
         else:
-            print("Make sure to enter 'Y' for Yes or 'N' for no. Try again")
-'''
+            print("Please enter y or n.")
 
 
 # email_data = build_email('2026-10-04: 05:00-10:00 | 14:00-17:00 - 8h 0m\n\nWeekly total: 8h 0m')
