@@ -1,5 +1,6 @@
 import pytest
-from shifts import convert_to_minutes, calculate_daily_hours, format_time_entry, calculate_daily_hours, gather_user_shift
+from datetime import date
+from shifts import convert_to_minutes, calculate_daily_hours, format_time_entry, gather_user_shift
 
 def test_convert_to_minutes_valid():
     assert convert_to_minutes("08:45") == 525
@@ -43,7 +44,8 @@ def test_gather_user_input_valid(monkeypatch): # happy path
         "morning_out": "12:00", 
         "afternoon_in": "13:00", 
         "afternoon_out": "20:00",
-        "total_minutes": 660
+        "total_minutes": 660,
+        "date": date.today().isoformat(),
     }
 
 def test_gather_user_input_invalid(monkeypatch, capsys): # invalid individual input + recovery
@@ -57,19 +59,21 @@ def test_gather_user_input_invalid(monkeypatch, capsys): # invalid individual in
         "morning_out": "13:00",
         "afternoon_in": "15:00",
         "afternoon_out": "20:00",
-        "total_minutes": 600 
+        "total_minutes": 600,
+        "date": date.today().isoformat(),
     }
 
-    def test_gather_user_input_invalid2(monkeypatch, capsys): # valid individual inputs but invalid overall shift + full-day recovery
-        responses = iter(["08:00", "1200", "1100", "20:00", "08:00", "10:00", "11:00", "13:00"])
-        monkeypatch.setattr("builtins.input", lambda prompt:next(responses))
-        response = gather_user_shift()
-        captured = capsys.readouterr()
-        assert "Time invalid" in captured.out
-        assert response == {
-            "morning_in": "08:00",
-            "morning_out": "10:00",
-            "afternoon_in": "11:00",
-            "afternoon_out": "13:00",
-            "total_minutes": 240
-        }
+def test_gather_user_input_invalid2(monkeypatch, capsys): # valid individual inputs but invalid overall shift + full-day recovery
+    responses = iter(["08:00", "1200", "1100", "20:00", "08:00", "10:00", "11:00", "13:00"])
+    monkeypatch.setattr("builtins.input", lambda prompt:next(responses))
+    response = gather_user_shift()
+    captured = capsys.readouterr()
+    assert "Time invalid" in captured.out
+    assert response == {
+        "morning_in": "08:00",
+        "morning_out": "10:00",
+        "afternoon_in": "11:00",
+        "afternoon_out": "13:00",
+        "total_minutes": 240,
+        "date": date.today().isoformat()
+    }

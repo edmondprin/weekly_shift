@@ -2,13 +2,13 @@ import pytest
 from duration_explore import decompose
 
 def test_decompose_valid_small():
-    assert decompose(380) == {'hours': 6, 'minutes': 20}
+    assert decompose(380) == {'years': 0, 'months': 0, 'days': 0, 'hours': 6, 'minutes': 20}
 
 def test_decompose_valid_big():
-    assert decompose(34533) == {'days': 23, 'hours': 23, "minutes": 33}
+    assert decompose(34533) == {'years': 0, 'months': 0, 'days': 23, 'hours': 23, "minutes": 33}
 
 def test_decompose_valid_boundary():
-    assert decompose(1440) == {'days': 1, 'hours': 0, 'minutes': 0}
+    assert decompose(1440) == {'years': 0, 'months': 0, 'days': 1, 'hours': 0, 'minutes': 0}
 
 def test_decompose_invalid_type():
     with pytest.raises(TypeError):
